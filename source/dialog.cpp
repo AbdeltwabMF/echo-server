@@ -17,43 +17,54 @@ Dialog::Dialog(QWidget *parent)
 
     client->client->connectToServer("server", QIODevice::ReadWrite);
 
-    client->client->write("hello, server");
+    chat = new QPlainTextEdit;
+    chat->setReadOnly(true);
 
-    QByteArray data = client->client->readAll();
-    qInfo() << "Client: " << data;
+    chat->setMinimumWidth(549);
+    chat->setMinimumHeight(350);
 
-    client->client->disconnectFromServer();
+    message = new QLineEdit();
+    message->setStyleSheet("QLineEdit {"
+                           "background-color: #F8F8F8;"
+                           "border: 1px solid #C3C3C3;"
+                           "padding: 3 3;"
+                           "border-radius: 4%;"
+                           "}"
+                           "QLineEdit:hover:!pressed {"
+                           "border: 1px solid #60CDCF;"
+                           "}"
+                           "QLineEdit:focus, QLineEdit:hover {"
+                           "background-color: #F9F9F9;"
+                           "}");
 
-    clientSend = new QPushButton(tr("&Send"));
+    send = new QPushButton(tr("&Send"));
+    connect(send, &QPushButton::clicked, this, &Dialog::onSendClicked);
 
-    serverChatText = new QPlainTextEdit;
-    serverChatText->setPlainText("No messages yet.");
-    serverChatText->setReadOnly(true);
+    QVBoxLayout *chatLayout = new QVBoxLayout;
+    chatLayout->addWidget(chat);
+    chatLayout->addWidget(message);
+    chatLayout->addWidget(send);
 
-    clientChatText = new QPlainTextEdit;
-    clientChatText->setPlainText("No messages yet.");
-    clientChatText->setReadOnly(true);
-
-    QVBoxLayout *serverSide = new QVBoxLayout();
-    serverSide->addWidget(serverChatText);
-
-    QGroupBox *serverBox = new QGroupBox(tr("&Server"));
-    serverBox->setLayout(serverSide);
-
-    QVBoxLayout *clientSide = new QVBoxLayout();
-    clientSide->addWidget(clientChatText);
-    clientSide->addWidget(clientSend);
-
-    QGroupBox *clientBox = new QGroupBox(tr("&Client"));
-    clientBox->setLayout(clientSide);
+    QGroupBox *chatBox = new QGroupBox(tr("&ChatTCP"));
+    chatBox->setLayout(chatLayout);
 
     QGridLayout *mainLayout = new QGridLayout();
-    mainLayout->addWidget(clientBox, 0, 0);
-    mainLayout->addWidget(serverBox, 0, 1);
+    mainLayout->addWidget(chatBox, 0, 0);
 
     setLayout(mainLayout);
+    setWindowTitle("Echo Server");
 }
 
 Dialog::~Dialog()
 {
+}
+
+void Dialog::onSendClicked()
+{
+    QString clientMsg = message->text().trimmed();
+    if(clientMsg.size() == 0) return;
+
+    qInfo(Q_FUNC_INFO);
+    clientMsg.push_front("Client: ");
+    chat->appendPlainText(clientMsg);
 }

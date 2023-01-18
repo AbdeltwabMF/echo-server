@@ -9,6 +9,7 @@
 QT_BEGIN_NAMESPACE
 class QLabel;
 class QPushButton;
+class QLineEdit;
 class QPlainTextEdit;
 QT_END_NAMESPACE
 
@@ -19,14 +20,15 @@ class Dialog : public QDialog
 public:
     Dialog(QWidget *parent = nullptr);
     ~Dialog();
-    QPushButton *clientSend;
-    QPlainTextEdit *serverChat;
-    QPlainTextEdit *clientChat;
-    QPlainTextEdit *serverChatText;
-    QPlainTextEdit *clientChatText;
+    QPlainTextEdit *chat;
+    QLineEdit *message;
+    QPushButton *send;
 
 private:
     Server *server;
     Client *client;
+
+private slots:
+    void onSendClicked();
 };
 #endif // DIALOG_H
