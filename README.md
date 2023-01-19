@@ -2,6 +2,10 @@
 
 Local echo server using Qt
 
+## Screenshot
+
+![cheo chat](assets/echo-chat.png)
+
 ## Development
 
 ### Dependencies

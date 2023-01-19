@@ -10,6 +10,13 @@ class Client : public QObject
 public:
     explicit Client(QObject *parent = nullptr);
     QLocalSocket *client;
+    void sendMessage(const QString &message);
+
+signals:
+    void sent(const QString &message);
+
+public slots:
+    void newMessage();
 
 private slots:
     void onConnected();

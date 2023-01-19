@@ -11,6 +11,9 @@ public:
     explicit Server(QObject *parent = nullptr);
     QLocalServer *server;
 
+signals:
+    void sent(const QString &message);
+
 private slots:
     void onNewConnection();
 };

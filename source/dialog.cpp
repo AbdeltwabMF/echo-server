@@ -10,17 +10,13 @@ Dialog::Dialog(QWidget *parent)
     server = new Server(this);
     client = new Client(this);
 
-    if (server->server->listen("server") == false)
-    {
-        qWarning("Unable to start server");
-    }
-
-    client->client->connectToServer("server", QIODevice::ReadWrite);
+    connect(server, &Server::sent, this, &Dialog::newMessage);
+    connect(client, &Client::sent, this, &Dialog::newMessage);
 
     chat = new QPlainTextEdit;
     chat->setReadOnly(true);
 
-    chat->setMinimumWidth(549);
+    chat->setMinimumWidth(649);
     chat->setMinimumHeight(350);
 
     message = new QLineEdit();
@@ -45,7 +41,7 @@ Dialog::Dialog(QWidget *parent)
     chatLayout->addWidget(message);
     chatLayout->addWidget(send);
 
-    QGroupBox *chatBox = new QGroupBox(tr("&ChatTCP"));
+    QGroupBox *chatBox = new QGroupBox(tr("&CryptoChat"));
     chatBox->setLayout(chatLayout);
 
     QGridLayout *mainLayout = new QGridLayout();
@@ -65,6 +61,14 @@ void Dialog::onSendClicked()
     if(clientMsg.size() == 0) return;
 
     qInfo(Q_FUNC_INFO);
-    clientMsg.push_front("Client: ");
-    chat->appendPlainText(clientMsg);
+    client->sendMessage(clientMsg);
+}
+
+void Dialog::newMessage(const QString &message)
+{
+    qInfo(Q_FUNC_INFO);
+    chat->appendPlainText(message);
+    if(message.startsWith("Server") == true) {
+        chat->appendPlainText("\n");
+    }
 }

@@ -30,5 +30,6 @@ private:
 
 private slots:
     void onSendClicked();
+    void newMessage(const QString &message);
 };
 #endif // DIALOG_H
