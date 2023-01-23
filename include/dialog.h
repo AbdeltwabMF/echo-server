@@ -23,6 +23,7 @@ public:
     QPlainTextEdit *chat;
     QLineEdit *message;
     QPushButton *send;
+    QPushButton *clear;
 
 private:
     Server *server;
@@ -30,6 +31,7 @@ private:
 
 private slots:
     void onSendClicked();
+    void onClearClicked();
     void newMessage(const QString &message);
 };
 #endif // DIALOG_H

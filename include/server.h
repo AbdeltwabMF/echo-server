@@ -7,12 +7,17 @@
 class Server : public QObject
 {
     Q_OBJECT
+    QLocalSocket *ls;
+
 public:
     explicit Server(QObject *parent = nullptr);
     QLocalServer *server;
 
 signals:
     void sent(const QString &message);
+
+public slots:
+    void newMessage();
 
 private slots:
     void onNewConnection();

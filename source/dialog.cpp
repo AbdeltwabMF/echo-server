@@ -36,12 +36,19 @@ Dialog::Dialog(QWidget *parent)
     send = new QPushButton(tr("&Send"));
     connect(send, &QPushButton::clicked, this, &Dialog::onSendClicked);
 
+    clear = new QPushButton(tr("&Clear"));
+    connect(clear, &QPushButton::clicked, this, &Dialog::onClearClicked);
+
     QVBoxLayout *chatLayout = new QVBoxLayout;
     chatLayout->addWidget(chat);
     chatLayout->addWidget(message);
-    chatLayout->addWidget(send);
 
-    QGroupBox *chatBox = new QGroupBox(tr("&CryptoChat"));
+    QHBoxLayout *controlLayout = new QHBoxLayout;
+    controlLayout->addWidget(send, 2);
+    controlLayout->addWidget(clear);
+    chatLayout->addLayout(controlLayout);
+
+    QGroupBox *chatBox = new QGroupBox(tr("&Chat"));
     chatBox->setLayout(chatLayout);
 
     QGridLayout *mainLayout = new QGridLayout();
@@ -62,6 +69,12 @@ void Dialog::onSendClicked()
 
     qInfo(Q_FUNC_INFO);
     client->sendMessage(clientMsg);
+}
+
+void Dialog::onClearClicked()
+{
+    qInfo(Q_FUNC_INFO);
+    chat->clear();
 }
 
 void Dialog::newMessage(const QString &message)

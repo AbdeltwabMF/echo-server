@@ -6,6 +6,7 @@ Client::Client(QObject *parent)
     : QObject{parent}
 {
     client = new QLocalSocket(parent);
+    client->connectToServer("echo-server.pipe");
     connect(client, &QLocalSocket::connected, this, &Client::onConnected);
     connect(client, &QLocalSocket::disconnected, this, &Client::onDisconnected);
     connect(client, &QLocalSocket::errorOccurred, this, &Client::onErrorOccurred);
@@ -91,20 +92,11 @@ void Client::onStateChanged(QLocalSocket::LocalSocketState socketState)
 void Client::newMessage()
 {
     qInfo(Q_FUNC_INFO);
-//    if (client->bytesAvailable() < (int)sizeof(quint16)) return;
-    QByteArray message = client->readAll();
-    qInfo() << "Server said: " << message;
-    emit sent(QString("Server: ") + message);
+    emit sent(QString("Server: ") + client->readAll());
 }
 
 void Client::sendMessage(const QString &message)
 {
     qInfo(Q_FUNC_INFO);
-    client->disconnectFromServer();
-    client->connectToServer("server");
     client->write(message.toStdString().c_str());
-    if(client->waitForBytesWritten(0) == false) {
-        qWarning() << client->errorString();
-        return;
-    }
 }

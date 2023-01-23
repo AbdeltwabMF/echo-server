@@ -1,10 +1,8 @@
-# Echo Server Qt
+# Echo Server
 
-Local echo server using Qt
+Echo server using [QLocalSocket](https://doc.qt.io/qt-5/qlocalsocket.html), QLocalServer, and [MessagePack](https://msgpack.org/index.html).
 
-## Screenshot
-
-![cheo chat](assets/echo-chat.png)
+![echo-server png](assets/echo-chat.png)
 
 ## Development
 
@@ -12,7 +10,7 @@ Local echo server using Qt
 
 - CMake 3.5+
 - Qt 6.0.4+
-- C++ compiler
+- C++17 compiler
 
 ### Build
 
