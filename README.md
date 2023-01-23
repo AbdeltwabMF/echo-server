@@ -2,6 +2,8 @@
 
 Echo server using [QLocalSocket](https://doc.qt.io/qt-5/qlocalsocket.html), QLocalServer, and [MessagePack](https://msgpack.org/index.html).
 
+## Screenshot
+
 ![echo-server png](assets/echo-chat.png)
 
 ## Development
